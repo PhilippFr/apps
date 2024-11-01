@@ -77,6 +77,11 @@ services:
       {% endif %}
     {% endif %}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
   {{ values.consts.rust_desk_relay_container_name }}:
     user: {{ "%d:%d" | format(values.run_as.user, values.run_as.group) }}
@@ -115,6 +120,11 @@ services:
       {% endif %}
     {% endif %}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
   {% if perms_dirs.items %}
   {{ values.consts.perms_container_name }}: {{ ix_lib.base.permissions.perms_container(items=perms_dirs.items, volumes=perms_mounts.items) | tojson }}

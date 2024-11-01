@@ -62,6 +62,11 @@ services:
         echo "Copying example config file to {{ jobs_path }}/{{ values.fscrawler.job_name }}/_settings.example.yaml"
         cp -f /example/_settings.example.yaml {{ jobs_path }}/{{ values.fscrawler.job_name }}/_settings.example.yaml
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
   {{ values.consts.fscrawler_container_name }}:
     image: {{ ix_lib.base.utils.get_image(images=values.images, name=values.fscrawler.image_selector) }}
     restart: unless-stopped
@@ -98,6 +103,11 @@ services:
       - {{ ix_lib.base.ports.get_port(port={"target": values.network.rest_port, "published": values.network.rest_port}) | tojson }}
     {% endif %}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
 {% if volumes.items %}
 volumes: {{ volumes.items | tojson }}

@@ -93,6 +93,11 @@ services:
         exit 0
     environment: {{ ix_lib.base.environment.envs(app=app_env, user=values.briefkasten.additional_envs, values=values) | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
   {{ values.consts.briefkasten_container_name }}:
     user: {{ "%d:%d" | format(values.consts.run_user, values.consts.run_group) }}
@@ -123,6 +128,11 @@ services:
     ports:
       - {{ ix_lib.base.ports.get_port(port={"target": values.network.web_port, "published": values.network.web_port}) | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
   {% if perms_dirs.items %}
   {{ values.consts.perms_container_name }}: {{ ix_lib.base.permissions.perms_container(items=perms_dirs.items, volumes=perms_mounts.items) | tojson }}
   {% endif %}

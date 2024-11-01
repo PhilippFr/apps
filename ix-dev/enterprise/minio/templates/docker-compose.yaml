@@ -73,6 +73,11 @@ services:
       "mc ready --insecure --cluster-read health"
     ) | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
     {% set proto = "https" if values.network.certificate_id else "http" %}
     {% set app_env = ix_lib.base.utils.merge_dicts({
         "MC_HOST_health": "%s://localhost:%d" | format(proto, values.network.api_port),

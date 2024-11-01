@@ -244,6 +244,25 @@
                                 }
                             },
                             {
+                                "variable": "additional_docker_networks",
+                                "label": "Additional Docker Networks",
+                                "description": "Configure additional Docker networks.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "name",
+                                            "label": "Network",
+                                            "schema": {
+                                                "type": "string",
+                                                "required": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
                                 "variable": "certificate_id",
                                 "label": "Certificate ID",
                                 "description": "The certificate ID to use for Photoprism.",

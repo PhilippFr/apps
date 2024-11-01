@@ -59,6 +59,11 @@ services:
       - {{ ix_lib.base.ports.get_port(port={"target": 53, "published": values.network.dns_port, "protocol": "udp"}) | tojson }}
     {% endif %}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
 {% if volumes.items %}
 volumes: {{ volumes.items | tojson }}

@@ -70,6 +70,11 @@ services:
       disable: true
     environment: {{ ix_lib.base.environment.envs(app={"TUNNEL_TOKEN": values.cloudflared.tunnel_token}, user=values.cloudflared.additional_envs, values=values) | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
   {% if perms_dirs.items %}
   {{ values.consts.perms_container_name }}: {{ ix_lib.base.permissions.perms_container(items=perms_dirs.items, volumes=perms_mounts.items) | tojson }}
   {% endif %}

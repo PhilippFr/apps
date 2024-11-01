@@ -102,6 +102,11 @@ services:
       "CP_DISABLE_HTTPS": "1" if values.castopod.disable_https_redirect else "0",
     }, user=values.castopod.additional_envs, values=values) | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
   {{ values.consts.castopod_web_container_name }}:
     user: "0:0"

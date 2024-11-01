@@ -77,6 +77,11 @@ services:
       - {{ ix_lib.base.ports.get_port(port={"target": values.network.rcon_port, "published": values.network.rcon_port}) | tojson }}
     {% endif %}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
 
   {{ values.consts.init_container_name }}:
     image: {{ ix_lib.base.utils.get_image(images=values.images, name="image") }}
@@ -89,6 +94,11 @@ services:
     cap_drop: {{ caps.drop | tojson }}
     security_opt: {{ ix_lib.base.security.get_sec_opts() | tojson }}
     volumes: {{ volume_mounts.items | tojson }}
+    {% if values.network.additional_docker_networks %}
+    networks:
+    {% for network in values.network.additional_docker_networks %}
+      - {{ network.name }}
+    {% endif %}
     entrypoint:
       - bash
       - -c

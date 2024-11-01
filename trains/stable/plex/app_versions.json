@@ -317,6 +317,25 @@
                                 }
                             },
                             {
+                                "variable": "additional_docker_networks",
+                                "label": "Additional Docker Networks",
+                                "description": "Configure additional Docker networks.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "name",
+                                            "label": "Network",
+                                            "schema": {
+                                                "type": "string",
+                                                "required": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
                                 "variable": "dns_opts",
                                 "label": "DNS Options",
                                 "description": "DNS options for the container.</br>\nFormat: key:value</br>\nExample: attempts:3\n",
